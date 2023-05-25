@@ -1,0 +1,27 @@
+.items-list {
+  margin: 0 auto;
+  padding: 20px 0;
+  list-style: none;
+  display: grid;
+  max-width: 200px;
+  grid-template-columns: 1fr;
+  row-gap: 15px;
+  column-gap: 6px;
+}
+@media (min-width: 450px) {
+  .items-list {
+    max-width: 400px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 768px) {
+  .items-list {
+    max-width: 600px;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (min-width: 1100px) {
+  .items-list {
+    max-width: 1000px;
+  }
+}
