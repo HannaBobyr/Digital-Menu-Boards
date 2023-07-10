@@ -1,29 +1,20 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
-
-import BusinessData from "./components/BusinessData";
-import ItemList from "./components/ItemsList";
+import { Route, Routes } from "react-router-dom";
+import Login from "./components/Registration/Login";
+import Register from "./components/Registration/Register";
+import UserHome from "./components/UserHome";
+import CreateProductPage from "./components/UserHome/ProductForm/createProduct";
+import EditProduct from "./components/UserHome/ProductForm/editProduct";
 
 function App() {
   const [items, setItems] = useState([]);
-  const [businessData, setBusinessData] = useState({});
-
-  const handle = useFullScreenHandle();
 
   useEffect(() => {
     const fetchData = async () => {
-      let json;
-      if (localStorage.getItem("data")) {
-        json = JSON.parse(localStorage.getItem("data"));
-      } else {
-        const data = await fetch("./items.json");
-        json = await data.json();
-        localStorage.setItem("data", JSON.stringify(json));
-      }
-      const { businessData, items } = json;
-      setItems(items);
-      setBusinessData(businessData);
+      const data = await fetch("http://localhost:4444/products");
+      const json = await data.json();
+      setItems(json);
     };
     fetchData();
   }, []);
@@ -31,14 +22,13 @@ function App() {
   if (!items) return <p>loarding</p>;
 
   return (
-    <div className="fullscreen">
-      <FullScreen handle={handle}>
-        <BusinessData data={businessData} />
-        <ItemList items={items} />
-      </FullScreen>
-
-      {/* <button onClick={handle.enter}>Enter fullscreen</button> */}
-    </div>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/auth/me/*" element={<UserHome />} />
+      <Route path="/createproduct" element={<CreateProductPage />} />
+      <Route path="/products/:id" element={<EditProduct />} />
+    </Routes>
   );
 }
 
