@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import { Form, Input, Button, Select, Upload, message } from "antd";
+import { Button, Form, Input, Select, Checkbox, Upload } from "antd";
 import { Formik } from "formik";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import Loader from "components/Loader";
 import schema from "./validationSchema";
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-function ProductForm({ initialValues, submit }) {
+const ProductForm = ({ onFinish, initialValues }) => {
+  const [list, setList] = useState([]);
   const [fileList, setFileList] = useState([]);
   const onChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
@@ -25,32 +28,40 @@ function ProductForm({ initialValues, submit }) {
     const imgWindow = window.open(src);
     imgWindow?.document.write(image.outerHTML);
   };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:4444/categories")
+      .then(({ data }) => setList(data));
+  }, []);
+
+  if (!list) return <Loader />;
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={schema}
-      onSubmit={(value) => console.log(value)}
+      onSubmit={(value) => {
+        const array = fileList[0];
+        value.image = array.response.url;
+        onFinish(value);
+      }}
     >
-      {({
-        handleSubmit,
-        touched,
-        errors,
-        getFieldProps,
-        setFieldValue,
-      }) => (
+      {({ handleSubmit, touched, errors, getFieldProps, setFieldValue }) => (
         <Form
-          className="ps-2 pe-2"
+          name="basic"
           labelCol={{ span: 9 }}
           wrapperCol={{ span: 8 }}
+          style={{ paddingTop: "100px" }}
           onFinish={handleSubmit}
-          layout="horizontal"
-          size="large"
+          initialValues={{
+            remember: true,
+          }}
           autoComplete="off"
-          style={{ marginTop: 20 }}
         >
           <Form.Item
             label="Title"
-            htmlFor="title"
+            name="title"
             help={touched.title && errors.title ? errors.title : ""}
             validateStatus={touched.title && errors.title ? "error" : undefined}
           >
@@ -59,7 +70,7 @@ function ProductForm({ initialValues, submit }) {
 
           <Form.Item
             label="Description"
-            htmlFor="description"
+            name="description"
             help={
               touched.description && errors.description
                 ? errors.description
@@ -78,34 +89,13 @@ function ProductForm({ initialValues, submit }) {
 
           <Form.Item
             label="Price"
-            htmlFor="price"
+            name="price"
             help={touched.price && errors.price ? errors.price : ""}
             validateStatus={touched.price && errors.price ? "error" : undefined}
           >
             <Input type="number" min="0" {...getFieldProps("price")} />
           </Form.Item>
 
-          {/* <Form.Item
-            label="Категорія"
-            htmlFor="category"
-            help={touched.category && errors.category ? errors.category : ""}
-            validateStatus={
-              touched.category && errors.category ? "error" : undefined
-            }
-          >
-            <Select
-              {...getFieldProps("category")}
-              onChange={(value) => setFieldValue("category", value)}
-            >
-              <Option disabled value="">
-                Виберіть категорію
-              </Option>
-              <Option value="plastic">Пластик</Option>
-              <Option value="metal">Метал</Option>
-              <Option value="paper">Папір</Option>
-              <Option value="glass">Скло</Option>
-            </Select>
-          </Form.Item> */}
           <Form.Item label="Image">
             <Upload
               name="image"
@@ -118,37 +108,55 @@ function ProductForm({ initialValues, submit }) {
               {fileList.length < 1 && "+ Upload"}
             </Upload>
           </Form.Item>
+
           <Form.Item
-            label="State"
-            htmlFor="state"
+            label="Active"
+            name="state"
             help={touched.state && errors.state ? errors.state : ""}
             validateStatus={touched.state && errors.state ? "error" : undefined}
+            valuePropName="checked"
+          >
+            <Checkbox
+              onChange={(e) => setFieldValue("state", e.target.checked)}
+            ></Checkbox>
+          </Form.Item>
+
+          <Form.Item
+            label="Category"
+            htmlFor="category"
+            help={touched.category && errors.category ? errors.category : ""}
+            validateStatus={
+              touched.category && errors.category ? "error" : undefined
+            }
           >
             <Select
-              {...getFieldProps("state")}
-              onChange={(value) => setFieldValue("state", value)}
+              {...getFieldProps("category")}
+              onChange={(value) => setFieldValue("category", value)}
             >
-              <Option disabled value="">
-                State
-              </Option>
-              <Option value="buy">Active</Option>
-              <Option value="sell">Inactive</Option>
+              {list.map((item) => {
+                return (
+                  <Option value={item.name} key={item.name}>
+                    {item.name}
+                  </Option>
+                );
+              })}
             </Select>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 12, span: 16 }}>
-            <Button
-              type="text"
-              htmlType="submit"
-              style={{ border: "1px solid #d9d9d9" }}
-            >
-              Create
+          <Form.Item
+            wrapperCol={{
+              offset: 12,
+              span: 16,
+            }}
+          >
+            <Button type="primary" htmlType="submit">
+              Submit
             </Button>
           </Form.Item>
         </Form>
       )}
     </Formik>
   );
-}
+};
 
 export default ProductForm;

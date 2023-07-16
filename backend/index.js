@@ -56,7 +56,6 @@ app.get("/products", productController.getAll);
 app.get("/products/:id", productController.getOne);
 app.patch(
   "/products/:id",
-  checkAuth,
   productValidator,
   handleValidationErrors,
   productController.update
@@ -65,6 +64,7 @@ app.delete("/products/:id", productController.remove);
 
 app.post("/categories", categoryController.create);
 app.get("/categories", categoryController.getAll);
+app.get("/categories/:id", categoryController.getOne);
 app.patch("/categories/:id", categoryController.update);
 app.delete("/categories/:id", categoryController.remove);
 

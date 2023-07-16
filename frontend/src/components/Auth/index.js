@@ -1,8 +1,16 @@
 import { Button, Form, Input } from "antd";
 import { Formik } from "formik";
 import schema from "./validationSchema";
+import { Link } from "react-router-dom";
 
-const RegistrationForm = ({ onFinish, initialValues }) => (
+const tailLayout = {
+  wrapperCol: {
+    offset: 12,
+    span: 16,
+  },
+};
+
+const AuthForm = ({ onFinish, initialValues, login }) => (
   <Formik
     initialValues={initialValues}
     validationSchema={schema}
@@ -13,7 +21,7 @@ const RegistrationForm = ({ onFinish, initialValues }) => (
         name="basic"
         labelCol={{ span: 9 }}
         wrapperCol={{ span: 8 }}
-        style={{ paddingTop: "100px" }}
+        style={{ paddingTop: "2 0px" }}
         onFinish={handleSubmit}
         initialValues={{
           remember: true,
@@ -40,19 +48,19 @@ const RegistrationForm = ({ onFinish, initialValues }) => (
           <Input.Password {...getFieldProps("password")} />
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 12,
-            span: 16,
-          }}
-        >
+        <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
+          {login && (
+            <Button type="link" htmlType="button">
+              <Link to="/register">Create account</Link>
+            </Button>
+          )}
         </Form.Item>
       </Form>
     )}
   </Formik>
 );
 
-export default RegistrationForm;
+export default AuthForm;

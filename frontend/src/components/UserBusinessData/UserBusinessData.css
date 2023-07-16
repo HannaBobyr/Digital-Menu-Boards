@@ -1,0 +1,18 @@
+.header {
+    background-color: #f00;
+    text-align: center;
+    padding-bottom: 30px;
+    padding-top: 30px;
+  }
+  .header_business {
+    font-size: 16px;
+    line-height: 19px;
+    color: #ffffff;
+    margin: 0;
+  }
+  .header_business-name {
+    font-size: 40px;
+    line-height: 54px;
+    color: #ffffff;
+    margin: 0;
+  }

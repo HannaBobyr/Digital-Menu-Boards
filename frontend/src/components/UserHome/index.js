@@ -8,6 +8,10 @@ const { Header, Sider, Content } = Layout;
 const UserHome = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -22,7 +26,7 @@ const UserHome = () => {
           style={{
             paddingTop: 50,
           }}
-          onClick={({key}) => {
+          onClick={({ key }) => {
             navigate(key);
           }}
           items={[
@@ -62,6 +66,7 @@ const UserHome = () => {
               height: 64,
             }}
           />
+          <Button onClick={logout}>Log out</Button>
         </Header>
         <Content
           style={{

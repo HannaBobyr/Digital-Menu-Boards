@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import { Descriptions } from "antd";
+import Loader from "components/Loader";
+import NoData from "components/NoData";
+import axios from "axios";
 
 const BusinessData = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetch("http://localhost:4444/businessData");
-      const json = await data.json();
-      setData(json);
-    };
-    fetchData();
+    axios
+      .get("http://localhost:4444/businessData")
+      .then(({ data }) => setData(data));
   }, []);
 
-  if (!data) return <p>loarding</p>;
+  if (!data) return <Loader />;
+  if (data.length === 0) return <NoData />;
   return (
     <>
       {data.map((item, index) => {

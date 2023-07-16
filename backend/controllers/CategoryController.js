@@ -23,15 +23,25 @@ export const getAll = async (req, res) => {
     res.status(404).json({ message: "Categories not found" });
   }
 };
+export const getOne = async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    const categories = await CategoryModel.findById(categoryId);
+    res.json(categories);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ message: "Categories not found" });
+  }
+};
 export const remove = async (req, res) => {
   try {
     const categoryId = req.params.id;
 
-    await CategoryModel.findByIdAndDelete({
+    const result = await CategoryModel.findByIdAndDelete({
       _id: categoryId,
     });
 
-    res.status(200).json({ status: true });
+    res.status(200).json(result);
   } catch (error) {
     console.log(error);
     res.status(404).json({ message: "Category not found" });
