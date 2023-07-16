@@ -15,15 +15,22 @@ const EditProduct = () => {
       .patch(`http://localhost:4444/products/${id}`, values)
       .then(() => navigate("/auth/me/products"))
       .catch(function (error) {
-        console.log(error.message);
+        console.log(error);
       });
   };
 
   useEffect(() => {
     axios.get(`http://localhost:4444/products/${id}`).then(({ data }) => {
       const { title, description, price, state, category, image } = data;
-      setInitialValues({ title, description, price, state, category, image });
-    });
+      setInitialValues({
+        title,
+        description,
+        price,
+        state,
+        category,
+        image,
+      })
+    }).catch((err) => console.log(err));
   }, [id]);
 
   if (!initialValues) return <Loader />;

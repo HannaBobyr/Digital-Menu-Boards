@@ -10,7 +10,8 @@ const BusinessData = () => {
   useEffect(() => {
     axios
       .get("http://localhost:4444/businessData")
-      .then(({ data }) => setData(data));
+      .then(({ data }) => setData(data))
+      .catch((err) =>console.log(err));
   }, []);
 
   if (!data) return <Loader />;

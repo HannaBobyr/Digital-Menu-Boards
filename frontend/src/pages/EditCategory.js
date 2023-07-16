@@ -13,7 +13,8 @@ const EditCategory = () => {
   useEffect(() => {
     axios
       .get(`http://localhost:4444/categories/${id}`)
-      .then(({ data }) => setInitialValues({ name: data.name }));
+      .then(({ data }) => setInitialValues({ name: data.name }))
+      .catch((err) =>console.log(err));
   }, [id]);
 
   if (!initialValues) return <Loader />;
@@ -23,7 +24,7 @@ const EditCategory = () => {
       .patch(`http://localhost:4444/categories/${id}`, values)
       .then(() => navigate("/auth/me/categories"))
       .catch(function (error) {
-        console.log(error.message);
+        console.log(error);
       });
   };
 

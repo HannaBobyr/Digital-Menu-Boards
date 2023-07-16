@@ -13,7 +13,7 @@ const CreateCategory = () => {
       .post(`http://localhost:4444/categories`, values)
       .then(() => navigate("/auth/me/categories"))
       .catch(function (error) {
-        console.log(error.message);
+        console.log(error);
       });
   };
 

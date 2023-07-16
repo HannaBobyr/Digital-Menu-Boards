@@ -27,10 +27,13 @@ const Categories = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:4444/categories").then(({ data }) => {
-      setInitLoading(false);
-      setList(data);
-    });
+    axios
+      .get("http://localhost:4444/categories")
+      .then(({ data }) => {
+        setInitLoading(false);
+        setList(data);
+      })
+      .catch((err) => console.log(err));
   }, [success]);
 
   return (

@@ -11,7 +11,8 @@ const Home = () => {
   useEffect(() => {
     axios
       .get("http://localhost:4444/products")
-      .then(({ data }) => setData(data));
+      .then(({ data }) => setData(data))
+      .catch((err) => console.log(err));
   }, []);
 
   if (!data) return <Loader />;

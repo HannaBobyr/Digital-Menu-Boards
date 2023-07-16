@@ -6,7 +6,7 @@ export const registerValidator = [
 ];
 
 export const productValidator = [
-  body("title", "The description must be at least 5 characters long").isLength({
+  body("title", "The title must be at least 5 characters long").isLength({
     min: 5,
   }),
   body(

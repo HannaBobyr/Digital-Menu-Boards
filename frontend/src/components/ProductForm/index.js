@@ -32,7 +32,8 @@ const ProductForm = ({ onFinish, initialValues }) => {
   useEffect(() => {
     axios
       .get("http://localhost:4444/categories")
-      .then(({ data }) => setList(data));
+      .then(({ data }) => setList(data))
+      .catch((err) =>console.log(err));
   }, []);
 
   if (!list) return <Loader />;
@@ -93,7 +94,7 @@ const ProductForm = ({ onFinish, initialValues }) => {
             help={touched.price && errors.price ? errors.price : ""}
             validateStatus={touched.price && errors.price ? "error" : undefined}
           >
-            <Input type="number" min="0" {...getFieldProps("price")} />
+            <Input type="number" min="0" step={0.01} {...getFieldProps("price")} />
           </Form.Item>
 
           <Form.Item label="Image">

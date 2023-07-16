@@ -19,7 +19,7 @@ function CreateProductPage() {
       .post(`http://localhost:4444/products`, value)
       .then(() => navigate("/auth/me/products"))
       .catch(function (error) {
-        console.log(error.message);
+        console.log(error);
       });
   };
   return <ProductForm initialValues={initialValues} onFinish={onFinish} />;
