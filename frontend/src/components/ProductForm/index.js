@@ -53,7 +53,7 @@ const ProductForm = ({ onFinish, initialValues }) => {
           name="basic"
           labelCol={{ span: 9 }}
           wrapperCol={{ span: 8 }}
-          style={{ paddingTop: "100px" }}
+          style={{ paddingTop: "50px" }}
           onFinish={handleSubmit}
           initialValues={{
             remember: true,

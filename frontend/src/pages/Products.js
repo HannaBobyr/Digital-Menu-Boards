@@ -110,6 +110,17 @@ const Products = () => {
       </>
     );
 
-  return <Table columns={columns} dataSource={data} pagination={false} />;
+  return (
+    <>
+      <Button
+        onClick={() => navigate("/createproduct")}
+        type="primary"
+        style={{ marginBottom: 20 }}
+      >
+        Create Product
+      </Button>
+      <Table columns={columns} dataSource={data} pagination={false} />
+    </>
+  );
 };
 export default Products;
